@@ -1,5 +1,5 @@
 import { getAllPosts } from '@/lib/posts'
-import PostFeed from '@/components/PostFeed'
+import TimelineLayout from '@/components/TimelineLayout'
 
 export const dynamic = 'force-static'
 
@@ -7,7 +7,7 @@ export default function HomePage() {
   const posts = getAllPosts()
 
   return (
-    <div className="container" style={{ paddingTop: '48px', paddingBottom: '80px' }}>
+    <div className="container" style={{ paddingTop: '48px', paddingBottom: '80px', maxWidth: '960px' }}>
       <header style={{ marginBottom: '40px' }}>
         <h1 style={{
           fontFamily: "'Space Grotesk','Noto Sans SC',sans-serif",
@@ -23,7 +23,7 @@ export default function HomePage() {
         </p>
       </header>
 
-      <PostFeed posts={posts} />
+      <TimelineLayout posts={posts} />
     </div>
   )
 }
