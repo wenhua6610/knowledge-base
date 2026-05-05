@@ -1,0 +1,28 @@
+---
+title: "Anthropic 昨天发了 Claude 3.7 Sonnet，有个新功能挺特别"
+date: "2025-02-25"
+category: "前沿技术"
+tags: ["Claude", "Anthropic", "扩展思考", "推理模型"]
+summary: "Claude 3.7 Sonnet 昨天发布，主打一个叫「扩展思考」的功能，让模型在回答前可以花更多时间推理。"
+type: "article"
+---
+
+昨天 Anthropic 发了 Claude 3.7 Sonnet，在官方 Twitter 和各种 AI 社区里传开了。
+
+## 最大的亮点：扩展思考（Extended Thinking）
+
+这次最特别的一个功能是"扩展思考"。你可以让模型在给出最终答案之前，先花更多时间推理，思考过程可以设定 token 预算（就是最多想多少步）。
+
+这和 DeepSeek-R1 那种展示思考过程的逻辑有点像，但 Anthropic 的实现方式不太一样——思考过程是"隐式"的，用户看不到完整的推理链，只看到最终答案（API 可以选择显示）。
+
+## 性能怎么样
+
+从发布的评测数字来看，在代码、数学、推理类任务上比 3.5 Sonnet 有明显提升。
+
+有意思的是，他们特别强调了 Claude 3.7 在 coding agent（代码智能体）场景下的表现，显然 Anthropic 在押注 AI 写代码这个方向。
+
+## 一个感受
+
+Anthropic 这次发布的节奏跟 DeepSeek 刷屏之后隔得很近，不知道是不是有意加速了发布时间。
+
+最近两个月 AI 发布的节奏真的在加快，感觉每隔几天就有新东西出来。等我认真用几天再写具体感受。
