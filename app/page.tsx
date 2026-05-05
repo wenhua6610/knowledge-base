@@ -1,16 +1,10 @@
 import { getAllPosts } from '@/lib/posts'
-import PostCard from '@/components/PostCard'
-import CategoryFilter from '@/components/CategoryFilter'
-import { Suspense } from 'react'
+import PostFeed from '@/components/PostFeed'
 
-interface Props {
-  searchParams: Promise<{ cat?: string }>
-}
+export const dynamic = 'force-static'
 
-export default async function HomePage({ searchParams }: Props) {
-  const { cat } = await searchParams
-  const allPosts = getAllPosts()
-  const posts = cat ? allPosts.filter(p => p.category === cat) : allPosts
+export default function HomePage() {
+  const posts = getAllPosts()
 
   return (
     <div className="container" style={{ paddingTop: '48px', paddingBottom: '80px' }}>
@@ -29,25 +23,7 @@ export default async function HomePage({ searchParams }: Props) {
         </p>
       </header>
 
-      <Suspense>
-        <CategoryFilter active={cat} />
-      </Suspense>
-
-      <p style={{ fontSize: '.8rem', color: 'var(--text-3)', marginBottom: '20px', fontFamily: "'Inter',sans-serif" }}>
-        {posts.length} 条记录
-      </p>
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-        {posts.map(post => (
-          <PostCard key={post.slug} post={post} />
-        ))}
-      </div>
-
-      {posts.length === 0 && (
-        <p style={{ color: 'var(--text-3)', textAlign: 'center', padding: '60px 0' }}>
-          这个分类还没有内容
-        </p>
-      )}
+      <PostFeed posts={posts} />
     </div>
   )
 }
