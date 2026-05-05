@@ -201,27 +201,92 @@ function TimelineBar({ months, active, onChange }: {
   )
 }
 
+// ── Search input ──────────────────────────────────────────────────────────────
+function SearchBox({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const [focused, setFocused] = useState(false)
+  return (
+    <div style={{
+      display: 'flex', alignItems: 'center', gap: '8px',
+      padding: '0 14px',
+      borderRadius: '12px',
+      border: `1.5px solid ${focused ? 'var(--accent)' : 'var(--border)'}`,
+      background: 'var(--surface)',
+      transition: 'border-color .2s',
+      marginBottom: '20px',
+    }}>
+      {/* magnifier icon */}
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, opacity: focused ? 1 : 0.4, transition: 'opacity .2s' }}>
+        <circle cx="6.5" cy="6.5" r="5" stroke="var(--accent)" strokeWidth="1.6"/>
+        <line x1="10.5" y1="10.5" x2="14" y2="14" stroke="var(--accent)" strokeWidth="1.6" strokeLinecap="round"/>
+      </svg>
+      <input
+        type="text"
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        placeholder="搜索标题、摘要、标签…"
+        style={{
+          flex: 1,
+          border: 'none', outline: 'none',
+          background: 'transparent',
+          fontFamily: "'Noto Sans SC','Inter',sans-serif",
+          fontSize: '.875rem',
+          color: 'var(--text)',
+          padding: '10px 0',
+          lineHeight: 1,
+        }}
+      />
+      {/* clear button */}
+      {value && (
+        <button
+          onClick={() => onChange('')}
+          style={{
+            border: 'none', background: 'none', cursor: 'pointer',
+            color: 'var(--text-3)', fontSize: '1rem', lineHeight: 1,
+            padding: '0 2px', display: 'flex', alignItems: 'center',
+          }}
+          aria-label="清除搜索"
+        >×</button>
+      )}
+    </div>
+  )
+}
+
 // ── Main layout ───────────────────────────────────────────────────────────────
 export default function TimelineLayout({ posts }: { posts: PostMeta[] }) {
   const [cat,   setCat]   = useState<string | null>(null)
   const [month, setMonth] = useState<string | null>(null)
+  const [query, setQuery] = useState('')
 
-  // Posts after category filter
+  // 1. Category filter
   const catPosts = useMemo(
     () => cat ? posts.filter(p => p.category === cat) : posts,
     [posts, cat]
   )
 
-  // Months available in current category
-  const months = useMemo(() => uniqMonths(catPosts), [catPosts])
+  // 2. Search filter (applied on top of category)
+  const searchPosts = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    if (!q) return catPosts
+    return catPosts.filter(p =>
+      p.title.toLowerCase().includes(q) ||
+      (p.summary ?? '').toLowerCase().includes(q) ||
+      p.tags.join(' ').toLowerCase().includes(q) ||
+      p.category.toLowerCase().includes(q)
+    )
+  }, [catPosts, query])
 
-  // If the stored month isn't in the current view, treat as "all"
+  // Timeline reflects category + search results
+  const months = useMemo(() => uniqMonths(searchPosts), [searchPosts])
+
+  // If stored month vanished from current view, treat as "all"
   const activeMonth = month && months.includes(month) ? month : null
 
-  // Final filtered list
+  // 3. Month filter (from timeline drag)
   const filtered = useMemo(
-    () => activeMonth ? catPosts.filter(p => p.date.startsWith(activeMonth)) : catPosts,
-    [catPosts, activeMonth]
+    () => activeMonth ? searchPosts.filter(p => p.date.startsWith(activeMonth)) : searchPosts,
+    [searchPosts, activeMonth]
   )
 
   return (
@@ -233,6 +298,9 @@ export default function TimelineLayout({ posts }: { posts: PostMeta[] }) {
       {/* ── Right: content ── */}
       <div style={{ flex: 1, minWidth: 0 }}>
 
+        {/* Search */}
+        <SearchBox value={query} onChange={v => { setQuery(v); setMonth(null) }} />
+
         {/* Category pills */}
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '28px' }}>
           <Pill label="全部" active={!cat} onClick={() => setCat(null)} />
@@ -241,19 +309,19 @@ export default function TimelineLayout({ posts }: { posts: PostMeta[] }) {
           ))}
         </div>
 
-        {/* Record count + active time label */}
+        {/* Record count */}
         <p style={{
           fontSize: '.8rem', color: 'var(--text-3)',
           marginBottom: '20px', fontFamily: "'Inter',sans-serif",
         }}>
           {filtered.length} 条记录
+          {query.trim() && (
+            <span style={{ marginLeft: '10px', fontFamily: "'JetBrains Mono',monospace", fontSize: '.72rem', color: 'var(--accent)' }}>
+              · 搜索&ldquo;{query.trim()}&rdquo;
+            </span>
+          )}
           {activeMonth && (
-            <span style={{
-              marginLeft: '10px',
-              fontFamily: "'JetBrains Mono',monospace",
-              fontSize: '.72rem',
-              color: 'var(--accent)',
-            }}>
+            <span style={{ marginLeft: '10px', fontFamily: "'JetBrains Mono',monospace", fontSize: '.72rem', color: 'var(--accent)' }}>
               · {activeMonth.slice(0, 4)} 年 {MO[+activeMonth.slice(5, 7) - 1]}
             </span>
           )}
@@ -266,7 +334,7 @@ export default function TimelineLayout({ posts }: { posts: PostMeta[] }) {
 
         {filtered.length === 0 && (
           <p style={{ color: 'var(--text-3)', textAlign: 'center', padding: '60px 0' }}>
-            没有符合条件的内容
+            {query.trim() ? <>没有找到与&ldquo;{query.trim()}&rdquo;相关的内容</> : '没有符合条件的内容'}
           </p>
         )}
       </div>
