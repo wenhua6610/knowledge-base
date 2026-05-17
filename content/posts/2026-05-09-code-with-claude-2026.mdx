@@ -1,0 +1,64 @@
+---
+title: "Code with Claude 2026 看了直播，Anthropic 这次发的东西挺猛"
+date: "2026-05-09"
+category: "前沿技术"
+tags: ["Anthropic", "Claude", "Claude Code", "Agent", "开发者大会"]
+summary: "Anthropic 的开发者大会 5/6 在旧金山办了第二届，发布密度比想象中高。Managed Agents、Claude Code 限额翻倍、SpaceX Colossus 算力独占，几个点都挺有意思。"
+type: "article"
+---
+
+Code with Claude 2026 5/6 在旧金山办了，Anthropic 第二届开发者大会。这次走了三个城市：旧金山 5/6、伦敦 5/19、东京 6/10，都有直播。
+
+没去现场，看了直播加事后整理的笔记，记几个我觉得重要的点。
+
+---
+
+## Managed Agents 三个新功能
+
+Multiagent Orchestration、Outcomes、Dreaming——三个名字都挺有意境，但具体怎么用还得看文档。
+
+**Multiagent Orchestration**：多 Agent 协同。和 OpenAI 的 Swarm、Google 的 ADK 是同一个方向，让多个 Agent 分工合作。
+
+**Outcomes**：从描述看是结果导向的执行模式，让 Agent 围绕目标而不是步骤来工作。这个抽象层级比之前的「写 prompt 让它一步步做」要高。
+
+**Dreaming**：这个名字最玄。看下来是让 Agent 在空闲时间「自我演练」，预先准备好可能要执行的任务。如果真能跑通，下次调用的延迟会显著降低。
+
+---
+
+## Claude Code 限额翻倍
+
+Pro、Max、Enterprise 用户的 5 小时限额翻倍。这个对重度用户来说是直接的好消息——之前限额经常是真的不够用。
+
+另外还宣布了一些 Claude Code 的「routines」（定时任务）相关的功能，这块要再看看具体能力。
+
+---
+
+## SpaceX Colossus 算力独占
+
+这条最炸：Anthropic 拿下 SpaceX Colossus 超算的全部算力配额。
+
+之前 Colossus 主要给 xAI 用，现在转给 Anthropic。结合前几天 xAI 解散的消息，这条相当于把整个故事讲完了——Anthropic 拿到了一座新的算力山。
+
+GPT-5.5 刚拉开和 Claude 的总分差，Anthropic 这边直接补了算力。下一代 Claude 可能就是用这批算力训出来的。
+
+---
+
+## 额外加了一天
+
+报名爆了，原本一天的活动加了第二天，专门给独立开发者和早期创业者。
+
+这个细节其实和上次写的「Anthropic 营收反超 OpenAI」是同一件事——Anthropic 在开发者生态上真的在重投入。
+
+---
+
+## 一点感想
+
+去年 Code with Claude 还像个内测发布会，今年密度和分量都明显上来了。
+
+Anthropic 的产品节奏现在很清楚：先打企业 API，再打开发者工具，再用 Claude Code / Managed Agents 把工作流接住。一层一层往上叠。
+
+OpenAI DevDay 一般是 10 月，到时候看怎么回应。
+
+---
+
+**信息来源**：[Live blog: Code w/ Claude 2026 - Simon Willison](https://simonwillison.net/2026/May/6/code-w-claude-2026/)，[Notes from Code with Claude 2026 - Chris Ebert's Blog](https://chrisebert.net/notes-from-code-with-claude-2026/)，[Inside Anthropic's 2026 Developer Conference - Every](https://every.to/chain-of-thought/inside-anthropic-s-2026-developer-conference)
