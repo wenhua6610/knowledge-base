@@ -272,7 +272,7 @@ export default function PixelCat() {
     resize()
     window.addEventListener('resize', resize)
 
-    const vw = window.innerWidth, vh = window.innerHeight
+    const vw = window.innerWidth
     const ground = () => window.innerHeight - GH * PX - 22
     pos.current  = { x: vw * 0.7, y: ground() }
     tgt.current  = { ...pos.current }
