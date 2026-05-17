@@ -1,5 +1,6 @@
 'use client'
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
+import { useSearchParams } from 'next/navigation'
 import type { PostMeta } from '@/lib/posts'
 import { CATEGORIES } from '@/lib/categories'
 import PostCard from './PostCard'
@@ -255,9 +256,10 @@ function SearchBox({ value, onChange }: { value: string; onChange: (v: string) =
 
 // ── Main layout ───────────────────────────────────────────────────────────────
 export default function TimelineLayout({ posts }: { posts: PostMeta[] }) {
+  const searchParams = useSearchParams()
   const [cat,   setCat]   = useState<string | null>(null)
   const [month, setMonth] = useState<string | null>(null)
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState(searchParams.get('q') ?? '')
 
   // 1. Category filter
   const catPosts = useMemo(
@@ -293,7 +295,9 @@ export default function TimelineLayout({ posts }: { posts: PostMeta[] }) {
     <div style={{ display: 'flex', gap: '28px', alignItems: 'flex-start' }}>
 
       {/* ── Left: timeline ── */}
-      <TimelineBar months={months} active={activeMonth} onChange={setMonth} />
+      <div className="timeline-sidebar">
+        <TimelineBar months={months} active={activeMonth} onChange={setMonth} />
+      </div>
 
       {/* ── Right: content ── */}
       <div style={{ flex: 1, minWidth: 0 }}>

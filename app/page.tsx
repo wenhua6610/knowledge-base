@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { getAllPosts } from '@/lib/posts'
 import TimelineLayout from '@/components/TimelineLayout'
 
@@ -23,7 +24,9 @@ export default function HomePage() {
         </p>
       </header>
 
-      <TimelineLayout posts={posts} />
+      <Suspense fallback={null}>
+        <TimelineLayout posts={posts} />
+      </Suspense>
     </div>
   )
 }

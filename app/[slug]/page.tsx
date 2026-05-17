@@ -49,11 +49,9 @@ export default async function PostPage({ params }: Props) {
             {formatDate(meta.date)}
           </time>
           {meta.tags.map(tag => (
-            <span key={tag} style={{
-              fontSize: '.65rem', fontFamily: "'JetBrains Mono',monospace",
-              color: 'var(--text-3)', background: 'var(--surface-alt)',
-              border: '1px solid var(--border)', borderRadius: '100px', padding: '2px 8px',
-            }}>{tag}</span>
+            <Link key={tag} href={`/?q=${encodeURIComponent(tag)}`} className="tag">
+              {tag}
+            </Link>
           ))}
         </div>
       </header>
